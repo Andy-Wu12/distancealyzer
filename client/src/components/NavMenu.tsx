@@ -34,7 +34,7 @@ export default function NavMenu({isLight, setIsLight}: NavMenuProps) {
           <SPARedirectButton onClick={handleClose} text="Calculator" location="/calc" color="primary" variant="outlined" />
         </MenuItem>
         <MenuItem>
-        <LightModeButton isLight={isLight} setIsLight={setIsLight} />
+          <LightModeButton isLight={isLight} setIsLight={setIsLight} />
         </MenuItem>
       </Menu>
     </div>
