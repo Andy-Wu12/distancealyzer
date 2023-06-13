@@ -3,10 +3,6 @@ import React, { useEffect } from 'react';
 import video404 from '../assets/404_Video.mp4';
 
 export default function NotFound() {
-  
-  useEffect(() => {
-    document.title = "Not Found";
-  }, [])
 
   return (
     <div>
