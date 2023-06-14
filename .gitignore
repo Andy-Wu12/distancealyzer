@@ -8,6 +8,7 @@ build/
 
 # secrets
 .env
+*.pem
 
 # testing
 coverage/

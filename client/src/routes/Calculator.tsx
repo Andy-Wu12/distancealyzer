@@ -8,6 +8,7 @@ import ThrottledFetchButton from "../components/ThrottledFetchButton";
 import useDistanceCalculator from "../hooks/useCalculator";
 
 import type { Coord } from "../hooks/useCalculator";
+import { roundToNDecimalPlaces } from "../util";
 
 type LocationInput = HTMLTextAreaElement | HTMLInputElement;
 
@@ -35,7 +36,9 @@ export default function DistanceCalculator() {
     const coord2: Coord | null = parseCoordinate(pointB);
 
     if(coord1 && coord2) {
-      setHaversineDist(getDistanceWithHaversine(coord1, coord2));
+      const haversineResult = getDistanceWithHaversine(coord1, coord2);
+      // Round to two decimal places as per specifications
+      setHaversineDist(roundToNDecimalPlaces(haversineResult, 2));
     }
   }
 
@@ -92,9 +95,9 @@ interface IDistanceOutputProps {
 function DistanceOutput({distance, unit}: IDistanceOutputProps) {
   return (
     <>
-      <p>
+      <p style={{fontWeight : "bolder"}}>
         Distance: {distance}{unit}
-      </p> 
+      </p>
     </>
   );
 }
