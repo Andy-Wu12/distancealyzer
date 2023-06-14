@@ -11,9 +11,25 @@ function useDistanceCalculator() {
   }
 
   // TODO: Add error handling. Expected, but not guaranteed input format is 40.730610,-73.935242
-  function parseCoordinate(point: string): Coord {
+  function parseCoordinate(point: string): Coord | null {
 
-    return { x: 0, y: 0 };
+    try {
+      // Expected, but not guaranteed input format is 40.730610,-73.935242. 
+      // Leeway can be given on start/end spaces, or between coordinate points
+      const coords: string[] = point.trim().split(',');
+      if(coords.length !== 2) {
+        throw new Error("Invalid longitude and latitude input");
+      }
+
+      const longitude: number = parseFloat(coords[0].trim());
+      const latitude: number = parseFloat(coords[1].trim());
+
+      return { x: longitude, y: latitude };
+    } catch (error) {
+      console.log(error);
+    }
+
+    return null;
   }
 
   // Reference: https://community.esri.com/t5/coordinate-reference-systems-blog/distance-on-a-sphere-the-haversine-formula/ba-p/902128

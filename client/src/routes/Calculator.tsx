@@ -13,8 +13,11 @@ import type { Coord } from "../hooks/useCalculator";
 type LocationInput = HTMLTextAreaElement | HTMLInputElement;
 
 export default function DistanceCalculator() {
-  const [pointA, setPointA] = useState('');
-  const [pointB, setPointB] = useState('');
+  const defaultPointA = '40.730610,-73.935242';
+  const defaultPointB = '36.778259,-119.417931';
+
+  const [pointA, setPointA] = useState(defaultPointA);
+  const [pointB, setPointB] = useState(defaultPointB);
   
   const [haversineDist, setHaversineDist] = useState<number | null>(null);
 
@@ -29,15 +32,16 @@ export default function DistanceCalculator() {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const coord1: Coord = parseCoordinate(pointA);
-    const coord2: Coord = parseCoordinate(pointB);
+    const coord1: Coord | null = parseCoordinate(pointA);
+    const coord2: Coord | null = parseCoordinate(pointB);
 
-    setHaversineDist(getDistanceWithHaversine(coord1, coord2));
+    if(coord1 && coord2) {
+      setHaversineDist(getDistanceWithHaversine(coord1, coord2));
+    }
   }
 
   // TODO: Add debounce to prevent modifying state on every single update
   function onPointChange(e: React.ChangeEvent<LocationInput>, setter: React.Dispatch<React.SetStateAction<string>>) {
-    console.log(e.target.value);
     setter(e.target.value);
   }
 
@@ -53,8 +57,8 @@ export default function DistanceCalculator() {
             <InputLabel id="point-a-input-label"> Point A </InputLabel>
             <TextField 
               required id="filled-basic" 
-              label="latitude,longitude" 
-              defaultValue="40.730610,-73.935242" 
+              label="longitude,latitude" 
+              defaultValue={defaultPointA} 
               variant="filled" 
               onChange={(event) => { onPointChange(event, setPointA) }}
             />
@@ -64,8 +68,8 @@ export default function DistanceCalculator() {
             <InputLabel id="point-b-input-label"> Point B </InputLabel>
             <TextField 
               required id="filled-basic" 
-              label="latitude,longitude" 
-              defaultValue="36.778259,-119.417931" 
+              label="longitude,latitude" 
+              defaultValue={defaultPointB} 
               variant="filled" 
               onChange={(event) => { onPointChange(event, setPointB) }}
             />
