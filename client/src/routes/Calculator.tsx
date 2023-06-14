@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -6,19 +6,36 @@ import TextField from "@mui/material/TextField";
 
 import ThrottledFetchButton from "../components/ThrottledFetchButton";
 
+import useDistanceCalculator from "../hooks/useCalculator";
+
+import type { Coord } from "../hooks/useCalculator";
+
 type LocationInput = HTMLTextAreaElement | HTMLInputElement;
 
 export default function DistanceCalculator() {
   const [pointA, setPointA] = useState('');
   const [pointB, setPointB] = useState('');
+  
+  const [haversineDist, setHaversineDist] = useState<number | null>(null);
+
   const [isDisabled, setDisabled] = useState(false);
+
+  const {
+    parseCoordinate,
+    getDistanceWithHaversine,
+    getDistanceWithEuclidean
+  } = useDistanceCalculator();
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log('submitted form!')
+    const coord1: Coord = parseCoordinate(pointA);
+    const coord2: Coord = parseCoordinate(pointB);
+
+    setHaversineDist(getDistanceWithHaversine(coord1, coord2));
   }
 
+  // TODO: Add debounce to prevent modifying state on every single update
   function onPointChange(e: React.ChangeEvent<LocationInput>, setter: React.Dispatch<React.SetStateAction<string>>) {
     console.log(e.target.value);
     setter(e.target.value);
@@ -54,11 +71,26 @@ export default function DistanceCalculator() {
             />
           </div>
           <br/>
-          <ThrottledFetchButton type="submit" text="Submit" isDisabled={isDisabled} />
+          <ThrottledFetchButton type="submit" text="Calculate" isDisabled={isDisabled} />
         </form>
-        <br/>
+      </div> <br/>
 
-    </div>
+      {haversineDist !== null && <DistanceOutput distance={haversineDist} unit="km" />}
+    </>
+  );
+}
+
+interface IDistanceOutputProps {
+  distance: number,
+  unit: string
+}
+
+function DistanceOutput({distance, unit}: IDistanceOutputProps) {
+  return (
+    <>
+      <p>
+        Distance: {distance}{unit}
+      </p> 
     </>
   );
 }
