@@ -51,7 +51,7 @@ export default function DistanceCalculator() {
     <>
       <h1>Distance Calculator</h1>
       <p>Enter the latitude and longitude values of the two points below</p>
-      <p>Click submit once you are ready</p>
+      <p>Click "CALCULATE" once you are ready</p>
 
       <div className='query-form'>
         <form onSubmit={onSubmit} className="distanceQueryForm">
@@ -59,7 +59,7 @@ export default function DistanceCalculator() {
             <InputLabel id="point-a-input-label"> Point A </InputLabel>
             <TextField 
               required id="filled-basic" 
-              label="longitude,latitude" 
+              label="latitude,longitude" 
               defaultValue={defaultPointA} 
               variant="filled" 
               onChange={(event) => { onPointChange(event, setPointA) }}
@@ -70,7 +70,7 @@ export default function DistanceCalculator() {
             <InputLabel id="point-b-input-label"> Point B </InputLabel>
             <TextField 
               required id="filled-basic" 
-              label="longitude,latitude" 
+              label="latitude,longitude" 
               defaultValue={defaultPointB} 
               variant="filled" 
               onChange={(event) => { onPointChange(event, setPointB) }}

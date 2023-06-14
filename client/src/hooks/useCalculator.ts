@@ -21,13 +21,13 @@ function useDistanceCalculator() {
         throw new Error("Invalid longitude and latitude input");
       }
 
-      const longitude: number = parseFloat(coords[0].trim());
-      const latitude: number = parseFloat(coords[1].trim());
+      const latitude: number = parseFloat(coords[0].trim());
+      const longitude: number = parseFloat(coords[1].trim());
       
       if(Number.isNaN(longitude) || Number.isNaN(latitude)) {
         throw new Error("Invalid longitude and latitude input")
       }
-      
+
       return { x: longitude, y: latitude };
 
     } catch (error) {
