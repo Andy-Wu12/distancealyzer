@@ -1,15 +1,15 @@
 import { useCallback, useState, useEffect } from "react";
 
 type Coord = {
-  latitude: number,
-  longitude: number
+  x: number, // longitude
+  y: number // latitude
 }
 
 function useDistanceCalculator() {
 
-  // TODO: Add error handling if there is time. Expected, but not guaranteed input format is 40.730610,-73.935242
+  // TODO: Add error handling. Expected, but not guaranteed input format is 40.730610,-73.935242
   function parseCoordinate(point: string): Coord {
-    return { latitude: 0, longitude: 0 };
+    return { x: 0, y: 0 };
   }
 
   function getDistanceWithHaversine(pointA: Coord, pointB: Coord): number {
@@ -17,7 +17,10 @@ function useDistanceCalculator() {
   }
 
   function getDistanceWithEuclidean(pointA: Coord, pointB: Coord): number {
-    return 0;
+    const q1MinusP1 = pointB.x - pointA.x;
+    const q2MinusP2 = pointB.y - pointA.y;
+
+    return Math.sqrt(Math.pow(q1MinusP1, 2) + Math.pow(q2MinusP2, 2));
   }
 
   return {
