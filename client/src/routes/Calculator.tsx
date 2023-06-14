@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 
 import ThrottledFetchButton from "../components/ThrottledFetchButton";
@@ -21,12 +20,12 @@ export default function DistanceCalculator() {
   
   const [haversineDist, setHaversineDist] = useState<number | null>(null);
 
-  const [isDisabled, setDisabled] = useState(false);
+  // const [isDisabled, setDisabled] = useState(false);
 
   const {
     parseCoordinate,
     getDistanceWithHaversine,
-    getDistanceWithEuclidean
+    // getDistanceWithEuclidean
   } = useDistanceCalculator();
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -75,7 +74,8 @@ export default function DistanceCalculator() {
             />
           </div>
           <br/>
-          <ThrottledFetchButton type="submit" text="Calculate" isDisabled={isDisabled} />
+          {/* Use isDisabled based on fetch status */}
+          <ThrottledFetchButton type="submit" text="Calculate" isDisabled={false} />
         </form>
       </div> <br/>
 
