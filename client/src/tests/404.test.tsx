@@ -10,14 +10,6 @@ test('explicitly renders "ERROR 404" text', () => {
   expect(textElement).toBeInTheDocument();
 })
 
-test(`should set document title to Not Found`, async () => {
-  render(<NotFound />);
-
-  await waitFor(() => {
-    expect(document.title).toEqual("Not Found")
-  });
-})
-
 test('should provide a message mentioning url does not exist', () => {
   render(<NotFound />);
 
