@@ -4,6 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 
 import ThrottledFetchButton from "../components/ThrottledFetchButton";
+import Geocoder from "../components/Geocoder";
 
 import useDistanceCalculator from "../hooks/useCalculator";
 
@@ -13,6 +14,15 @@ import { roundToNDecimalPlaces } from "../util";
 type LocationInput = HTMLTextAreaElement | HTMLInputElement;
 
 export default function DistanceCalculator() {
+  return (
+    <>
+      <DistanceCalculatorForm /> <hr/>
+      <Geocoder />
+    </>
+  )
+}
+
+function DistanceCalculatorForm() {
   const defaultPointA = '40.730610,-73.935242';
   const defaultPointB = '36.778259,-119.417931';
 
@@ -53,8 +63,8 @@ export default function DistanceCalculator() {
       <p>Enter the latitude and longitude values of the two points below</p>
       <p>Click "CALCULATE" once you are ready</p>
 
-      <div className='query-form'>
-        <form onSubmit={onSubmit} className="distanceQueryForm">
+      <div className='queryForm'>
+        <form onSubmit={onSubmit} id="distanceQueryForm">
           <div id="point-a-input">
             <InputLabel id="point-a-input-label"> Point A </InputLabel>
             <TextField 
