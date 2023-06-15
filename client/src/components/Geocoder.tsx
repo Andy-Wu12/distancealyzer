@@ -7,7 +7,7 @@ import ThrottledFetchButton from "./ThrottledFetchButton";
 import CopyTextButton from "./CopyTextButton";
 
 import useGeocoder from "../hooks/useGeocoder";
-import { uriEncodeString } from "../util";
+import { throttle, uriEncodeString } from "../util";
 
 export default function Geocoder() {
   return (
@@ -26,15 +26,25 @@ export default function Geocoder() {
 function GeocoderForm() {
   const [address, setAddress] = useState('');
   const [coordinateStr, setCoordinateStr] = useState('');
+  const [isThrottled, setThrottled] = useState(false);
 
-  const geocoder = useGeocoder();
+  const fetchDelay = 2000;
+
+  const {
+    getCoordinatesOfAddress,
+    isPendingFetch
+  } = useGeocoder();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const coordinate = await geocoder.getCoordinatesOfAddress(uriEncodeString(address));
 
-    const coordinateStr = coordinate ? `${coordinate.y},${coordinate.x}` : "Nothing found for given address";
-    setCoordinateStr(coordinateStr);
+    throttle(async () => {
+      setThrottled(true);
+      const coordinate = await getCoordinatesOfAddress(uriEncodeString(address));
+
+      const coordinateStr = coordinate ? `${coordinate.y},${coordinate.x}` : "Nothing found for given address";
+      setCoordinateStr(coordinateStr);
+    }, fetchDelay, {id: null}, () => { setThrottled(false) });
   }
 
   return (
@@ -52,7 +62,7 @@ function GeocoderForm() {
             />
           </div> <br/>
           {/* Use isDisabled based on fetch status */}
-          <ThrottledFetchButton type="submit" text="Get Coordinates" isDisabled={false} />
+          <ThrottledFetchButton type="submit" text="Get Coordinates" isDisabled={isPendingFetch || isThrottled} />
         </form> <br/>
         <GeocodeOutput coordinateStr={coordinateStr}/>
       </div>
