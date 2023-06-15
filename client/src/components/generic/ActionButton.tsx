@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 
 export interface ActionButtonProps {
-  onClick: () => void,
+  onClick: React.MouseEventHandler<any>
   text?: string,
   isDisabled?: boolean,
   className?: string,
